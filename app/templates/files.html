@@ -1,7 +1,8 @@
-{% extends "base.html" %}  {# or however your template inherits #}
+{% extends 'base.html' %}
 
-{% block content %}
-<h2>Uploaded Images</h2>
+{% block main %}
+<h1 class="page-header">Uploaded Images</h1>
+
 <div class="image-grid">
     {% for image in images %}
     <div class="image-item">
@@ -17,12 +18,25 @@
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1rem;
     padding: 1rem;
+    margin-top: 20px;
+}
+.image-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 .image-item img {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    border-radius: 8px;
+}
+.image-item p {
+    text-align: center;
+    font-size: 0.85rem;
+    margin: 0.5rem;
 }
 </style>
+
 {% endblock %}

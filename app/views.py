@@ -31,11 +31,12 @@ def upload():
     if form.validate_on_submit():
         f = form.photo.data
         filename = secure_filename(f.filename)
-        f.save(os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER'], filename))
+        f.save(os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER'], filename))  
         flash('File Saved', 'success')
         return redirect(url_for('files'))
 
     return render_template('upload.html', form=form)
+
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -55,6 +56,14 @@ def login():
             flash('Invalid username or password.', 'danger')
 
     return render_template("login.html", form=form)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('home'))
 
 
 def get_uploaded_images():
@@ -118,36 +127,3 @@ def add_header(response):
 def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
-
-
-def get_uploaded_images():
-    rootdir = os.getcwd()
-    image_list = []
-    upload_path = os.path.join(rootdir, app.config['UPLOAD_FOLDER'])
-
-    for subdir, dirs, files in os.walk(upload_path):
-        for file in files:
-            if file.lower().endswith(('.jpg', '.jpeg', '.png')):
-                image_list.append(file)
-    return image_list
-
-@app.route('/uploads/<filename>')
-def get_image(filename):
-    return send_from_directory(
-        os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER']),
-        filename
-    )
-
-@app.route('/files')
-@login_required
-def files():
-    images = get_uploaded_images()
-    return render_template('files.html', images=images)
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    flash('You have been logged out.', 'info')
-    return redirect(url_for('home'))
