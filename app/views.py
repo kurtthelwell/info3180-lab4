@@ -57,14 +57,6 @@ def login():
     return render_template("login.html", form=form)
 
 
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    flash('You have been logged out.', 'info')
-    return redirect(url_for('home'))
-
-
 def get_uploaded_images():
     image_list = []
     upload_path = os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER'])
@@ -151,3 +143,11 @@ def get_image(filename):
 def files():
     images = get_uploaded_images()
     return render_template('files.html', images=images)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('home'))
