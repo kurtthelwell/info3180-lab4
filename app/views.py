@@ -39,7 +39,6 @@ def upload():
 
     return render_template('upload.html', form=form)
 
-
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     form = LoginForm()
